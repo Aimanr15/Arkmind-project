@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+const path_1 = __importDefault(require("path"));
+const envFile = process.env.NODE_ENV === 'production' ? '.env' : '.env.dev';
+dotenv_1.default.config({ path: path_1.default.resolve(process.cwd(), envFile) });
 const sequelize = new sequelize_1.Sequelize({
     dialect: 'mysql',
     host: process.env.DB_HOST,
@@ -13,25 +15,13 @@ const sequelize = new sequelize_1.Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    logging: (msg) => console.log(`[Database] ${msg}`),
+    dialectModule: require('mysql2'),
+    logging: process.env.NODE_ENV === 'development',
     pool: {
-        max: 2,
-        min: 0,
-        acquire: 60000,
-        idle: 10000
-    },
-    dialectOptions: {
-        connectTimeout: 60000,
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    },
-    retry: {
         max: 5,
-        backoffBase: 1000,
-        backoffExponent: 1.5
+        min: 0,
+        acquire: 30000,
+        idle: 10000
     }
 });
-exports.default = sequelize;
 //# sourceMappingURL=database.js.map

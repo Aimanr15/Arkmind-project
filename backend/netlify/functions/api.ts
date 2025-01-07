@@ -38,7 +38,7 @@ app.use('/api/items', itemRoutes);
 // Test database connection
 sequelize.authenticate()
   .then(() => console.log('Database connected'))
-  .catch(err => console.error('Database connection error:', err));
+  .catch((err: Error) => console.error('Database connection error:', err));
 
 // Error handling middleware
 app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {

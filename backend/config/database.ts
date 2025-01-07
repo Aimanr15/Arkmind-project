@@ -1,16 +1,17 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+// Load the appropriate .env file based on NODE_ENV
+const envFile = process.env.NODE_ENV === 'production' ? '.env' : '.env.dev';
+dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
-const sequelize = new Sequelize({
+const databaseUrl = 'mysql://root:iuuqFVWcGaQhyIAZQvPvhPlODKfoyOam@roundhouse.proxy.rlwy.net:51179/railway';
+
+const sequelize = new Sequelize(databaseUrl, {
   dialect: 'mysql',
-  host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
   dialectModule: require('mysql2'),
-  logging: false,
+  logging: process.env.NODE_ENV === 'development',
   pool: {
     max: 5,
     min: 0,
