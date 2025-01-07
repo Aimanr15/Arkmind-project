@@ -33,7 +33,7 @@ app.get('/api/health', (_req, res) => {
 app.use('/api/items', item_route_1.default);
 database_1.default.authenticate()
     .then(() => console.log('Database connected'))
-    .catch(err => console.error('Database connection error:', err));
+    .catch((err) => console.error('Database connection error:', err));
 app.use((err, _req, res, _next) => {
     console.error(err.stack);
     res.status(500).json({

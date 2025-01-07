@@ -8,13 +8,9 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
 const envFile = process.env.NODE_ENV === 'production' ? '.env' : '.env.dev';
 dotenv_1.default.config({ path: path_1.default.resolve(process.cwd(), envFile) });
-const sequelize = new sequelize_1.Sequelize({
+const databaseUrl = 'mysql://root:iuuqFVWcGaQhyIAZQvPvhPlODKfoyOam@roundhouse.proxy.rlwy.net:51179/railway';
+const sequelize = new sequelize_1.Sequelize(databaseUrl, {
     dialect: 'mysql',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT || '3306'),
-    username: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
     dialectModule: require('mysql2'),
     logging: process.env.NODE_ENV === 'development',
     pool: {
@@ -24,4 +20,5 @@ const sequelize = new sequelize_1.Sequelize({
         idle: 10000
     }
 });
+exports.default = sequelize;
 //# sourceMappingURL=database.js.map
